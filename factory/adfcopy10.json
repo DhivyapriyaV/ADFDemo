@@ -1,0 +1,9 @@
+{
+	"name": "adfcopy10",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "79e31554-3164-43e2-8535-ea9cd6e57c3e",
+		"tenantId": "a65d6478-fade-42fe-9c31-34ec99ef8327"
+	}
+}

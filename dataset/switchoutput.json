@@ -1,0 +1,27 @@
+{
+	"name": "switchoutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservice_storageadfdemo",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"switchfolder": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().switchfolder",
+					"type": "Expression"
+				},
+				"container": "adfdemo"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

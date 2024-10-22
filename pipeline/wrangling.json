@@ -1,0 +1,48 @@
+{
+	"name": "wrangling",
+	"properties": {
+		"activities": [
+			{
+				"name": "Power Query1",
+				"type": "ExecuteWranglingDataflow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "groupbywrangling",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"queries": [
+						{
+							"queryName": "UserQuery",
+							"dataflowSinks": [
+								{
+									"name": "UserQueryemployeedataset",
+									"dataset": {
+										"referenceName": "employeedataset",
+										"type": "DatasetReference"
+									},
+									"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tempid as string,\n\t\t{name } as string,\n\t\tcountry as string,\n\t\tdepartment as string\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> UserQueryemployeedataset"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-10-21T15:03:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

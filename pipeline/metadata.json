@@ -1,0 +1,114 @@
+{
+	"name": "metadata",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Datasetinput",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"lastModified"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(formatDateTime(utcNow(),'yyyy-mm-dd'),\nformatDateTime(activity('Get Metadata1').output.lastModified,'yyyy-mm-dd')\n )",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "adfdemo/Input/demo.txt"
+								},
+								{
+									"name": "Destination",
+									"value": "adfdemo/output/demo1.txt"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "Datasetinput",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Datasetoutput",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-10-19T06:21:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

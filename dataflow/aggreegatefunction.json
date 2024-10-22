@@ -1,0 +1,54 @@
+{
+	"name": "aggreegatefunction",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "employeedataset",
+						"type": "DatasetReference"
+					},
+					"name": "employee"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "filteroutput",
+						"type": "DatasetReference"
+					},
+					"name": "totalemployyecount"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          {name } as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> employee",
+				"employee aggregate(groupBy(department),",
+				"     TotalEmp = count(empid)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['totalemployeecount'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          department,",
+				"          TotalEmp",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> totalemployyecount"
+			]
+		}
+	}
+}
