@@ -1,0 +1,9 @@
+{
+	"name": "cicdadfdemo1",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ffd17934-a670-46a2-a3ef-89e734521e28",
+		"tenantId": "a65d6478-fade-42fe-9c31-34ec99ef8327"
+	}
+}
